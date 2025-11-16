@@ -1,0 +1,118 @@
+\documentclass[twocolumn]{article}
+\usepackage{graphicx}
+\usepackage{aaai2026}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\setlength{\parindent}{1em}
+
+\begin{document}
+
+\appendix
+
+%======================== Appendix A ========================
+\section*{Appendix A Proof for Theorem 1}
+
+\quad Based on the definition of the target label space $\mathcal{Y}^t = \mathcal{Y}^s  \cup  \mathcal{Y}^u$, the total target risk can be decomposed as,
+\begin{equation}
+\mathcal R'(h) = (1 - \pi^{u}) \cdot \mathcal R^{known}(h) + \pi^{u} \cdot \mathcal R^{OS}(h)
+\end{equation}
+
+\noindent where $\mathcal R^{known}(h)$ and $\mathcal R^{OS}(h)$ (Fang et al., 2020) denote the target risks from known and unknown classes, respectively. $\pi^{u}$ is the prior probability of unknown classes in the target domain. From the DG error bound in (Wang et al., 2022), the known-class risk satisfies,
+\begin{equation}
+\mathcal R^{known}(h) \leq \sum_{i=1}^{M} \pi_i^* \mathcal R^i(h) 
++ \frac{\gamma + \rho}{2}
++ \lambda_{\mathcal H,(\mathcal P'_X, \mathcal P_X^*)}
+\end{equation}
+
+\noindent It is assumed that the source domain prior probabilities satisfy $\sum_{i=1}^{M} \pi_i^*=1$, $\pi_i>0$, for all $i=1...M$. Substitute Equation (2) into Equation (1), we have
+\begin{equation}
+\begin{split}
+\mathcal R'(h) \le 
+(1 - \pi^u)\!\left(
+\sum_{i=1}^{M} \pi_i^* \mathcal R^i(h)
++ \frac{\gamma + \rho}{2}
++ \lambda_{\mathcal H,(\mathcal P'_X, \mathcal P_X^*)}
+\right) \\
+\quad {}+ \pi^{u} \cdot \mathcal R^{OS}(h)
+\end{split}
+\end{equation}
+
+Since both $\pi^{u}$ and $1 - \pi^{u}$ belong to $[0,1]$, the inequality simplifies to
+\begin{equation}
+\mathcal R'(h) \leq \sum_{i=1}^{M} \pi_i^* \mathcal R^i(h)
++ \frac{\gamma + \rho}{2}
++ \lambda_{\mathcal H,(\mathcal P'_X, \mathcal P_X^*)}
++ \mathcal R^{OS}(h)
+\end{equation}
+
+\noindent where $\mathcal{R}^i(h)$ is the risk of the $i$-th source domain. $\lambda_{\mathcal{H}(\mathcal{P}_\mathcal{X}^t, \mathcal{P}_\mathcal{X}^*)}$ is the ideal joint risk across the target domain and the domain with the best approximator distribution $\mathcal{P}_\mathcal{X}^*$. $\mathcal{R}^{\text{OS}}(h)$ is the open space risk, which represents the risk of misclassifying unknown-class samples in target domain to known classes.
+
+
+%======================== Appendix B ========================
+\section*{Appendix B Proof for Lemma 1}
+\quad The prompt of the $c$-th class is formulated as,
+\begin{equation}
+p_c = [\Phi(v_{\text{dom}})],  [\textit{classname}]
+\end{equation}
+where $\Phi(v_{\text{dom}})$ is the domain token and $classname$ is the specific class. Assuming that the mapping function \(F_t\)  satisfies linear superposition, then the corresponding feature embedding is,
+$p^c$ can be decomposed as,
+\begin{equation}
+F_t(p^c) = \Phi(v_{\text{dom}})  + \textit{class\_emb(c)}
+\end{equation}
+where $\Phi(v_{\text{dom}})$ represents the domain-level features, and $\textit{class\_emb(c)}$ is the base embedding of the class name. Note that $\textit{class\_emb(c)}$ is a coarse-grained embedding of the class name like "cat" or "dog", which contains extensive shared information between classes, usually resulting in small differences.
+
+At the same time, the semantic-enhanced class prompt is,
+\begin{equation}
+p_{sem}^c = [\Phi(v_{\text{dom}})], [\Psi_1(v_{{sem}}^{(1,c)}), \ldots, \Psi_K(v_{{sem}}^{(K,c)})], [\textit{classname}]
+\end{equation}
+
+\noindent Thus the feature of the semantic-enhanced class prompt can be decomposed as,
+\begin{equation}
+F_t(p_{\text{enh}}^c) = \Phi(v_{\text{dom}}) + \sum_{k=1}^{K} \Psi_k(v^{(k,c)}_{\text{sem}}) + \textit{class\_emb(c)}
+\end{equation}
+
+\noindent where $\Psi_k(v^{(k)}_{\text{sem}})$ denotes the $k$-th fine-grained semantic token, corresponding to $c$-th local features, e.g., “vertical pupils of a cat” or “sharp beak of a bird”. For different classes, it is commonly that $v^{(k,c)}_{\text{sem}}\perp v^{(k,d)}_{\text{sem}}$
+that is, the fine-grained features of distinct classes are orthogonal or weakly correlated.
+
+For classes $c$ and $d$ $(c \neq d)$ in the same domain, the class discrepancy based on traditional prompts can be written as,
+\begin{equation}
+\begin{aligned}
+\mathrm{dis}(c,d) &= \mathrm{dis}\Big(F_t(p^c),F_t(p^d)\Big) \\
+&= \mathrm{dis} \Big(\textit{class\_emb}(c) , \textit{class\_emb}(d)\Big)
+\end{aligned}
+\end{equation}
+
+While the discrepancy in terms of the enhanced prompts is,
+\begin{equation}
+\begin{aligned}
+\mathrm{dis}_{sim}(c,d) &= \mathrm{dis}\Big(F_t(p^c_{sim}),F_t(p^d_{sim})\Big) \\
+&\approx \mathrm{dis}\Big( \sum_{k=1}^{K} \Psi_k(v^{(k,c)}_{\text{sem}}),\sum_{k=1}^{K} \Psi_k(v^{(k,d)}_{\text{sem}})\Big) \\
+&\quad + \mathrm{dis}\Big(\textit{class\_emb}(c) , \textit{class\_emb}(d)\Big)
+\end{aligned}
+\end{equation}
+
+The orthogonal or weakly correlated fine-grained features of distinct classes satisfy, $$ \mathrm{dis}\Big( \sum_{k=1}^{K} \Psi_k(v^{(k,c)}_{\text{sem}}),\sum_{k=1}^{K} \Psi_k(v^{(k,d)}_{\text{sem}})\Big)>0$$ Consequently, the discrepancy semantic-enhanced prompts are diluted by class-specific fine-grained features, resulting in a larger value,
+\[{\textit{dis}_{\textit{sem}}(c,d) >\textit{dis(c,d)}}\]
+
+In scenarios where classes $c$ and $d$ belong to different domains, the above inequality can be derived through a similar reasoning process.
+
+
+%======================== Appendix C ========================
+\section*{Appendix C Hyperparameter Sensitivity Analysis}
+
+\quad Hyperparameter Sensitivity Analysis. Figure 1 shows the sensitivity analysis of two critical hyper-parameters. For attention heads number $K$, the optimal performance occurs at $K$=4. Fewer heads reduce accuracy due to insufficient semantic modeling, while more heads also degrade performance via overfitting. For $\sigma$ in diffusion generation, the best value is $\sigma$=0.2. Lower values limit the pseudo-unknown diversity, whereas higher values introduce noise that erodes semantic coherence.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\columnwidth]{fig3.png}
+    \caption{Hyperparameter Sensitivity Analysis for SeeCLIP.}
+    \label{fig:hp}
+\end{figure}
+
+%======================== References ========================
+\section*{References}
+Fang Z, Lu J, Liu F, et al. Open set domain adaptation: Theoretical bound and algorithm[J]. IEEE transactions on neural networks and learning systems, 2020, 32(10): 4309-4322.
+
+\noindent Wang J, Lan C, Liu C, et al. Generalizing to unseen domains: A survey on domain generalization[J]. IEEE transactions on knowledge and data engineering, 2022, 35(8): 8052-8072.
+
+\end{document}
