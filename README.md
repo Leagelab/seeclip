@@ -1,2 +1,2 @@
 # seeclip
-This is used to store article appendices for SeeCLIP.
+This contains the code for the SeeCLIP model as well as the appendix of the paper, which includes the proofs.
