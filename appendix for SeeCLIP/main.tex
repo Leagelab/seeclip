@@ -10,7 +10,7 @@
 \appendix
 
 %======================== Appendix A ========================
-\section*{Appendix A Proof for Theorem 1}
+\section*{Appendix A: Proof for Theorem 1}
 
 \quad Based on the definition of the target label space $\mathcal{Y}^t = \mathcal{Y}^s  \cup  \mathcal{Y}^u$, the total target risk can be decomposed as,
 \begin{equation}
@@ -21,17 +21,17 @@
 \begin{equation}
 \mathcal R^{known}(h) \leq \sum_{i=1}^{M} \pi_i^* \mathcal R^i(h) 
 + \frac{\gamma + \rho}{2}
-+ \lambda_{\mathcal H,(\mathcal P'_X, \mathcal P_X^*)}
++ \lambda_{\mathcal H,(\mathcal P^t_X, \mathcal P_X^*)}
 \end{equation}
 
 \noindent It is assumed that the source domain prior probabilities satisfy $\sum_{i=1}^{M} \pi_i^*=1$, $\pi_i>0$, for all $i=1...M$. Substitute Equation (2) into Equation (1), we have
 \begin{equation}
 \begin{split}
-\mathcal R'(h) \le 
+\mathcal R^t(h) \le 
 (1 - \pi^u)\!\left(
 \sum_{i=1}^{M} \pi_i^* \mathcal R^i(h)
 + \frac{\gamma + \rho}{2}
-+ \lambda_{\mathcal H,(\mathcal P'_X, \mathcal P_X^*)}
++ \lambda_{\mathcal H,(\mathcal P^t_X, \mathcal P_X^*)}
 \right) \\
 \quad {}+ \pi^{u} \cdot \mathcal R^{OS}(h)
 \end{split}
@@ -39,9 +39,9 @@
 
 Since both $\pi^{u}$ and $1 - \pi^{u}$ belong to $[0,1]$, the inequality simplifies to
 \begin{equation}
-\mathcal R'(h) \leq \sum_{i=1}^{M} \pi_i^* \mathcal R^i(h)
+\mathcal R^t(h) \leq \sum_{i=1}^{M} \pi_i^* \mathcal R^i(h)
 + \frac{\gamma + \rho}{2}
-+ \lambda_{\mathcal H,(\mathcal P'_X, \mathcal P_X^*)}
++ \lambda_{\mathcal H,(\mathcal P^t_X, \mathcal P_X^*)}
 + \mathcal R^{OS}(h)
 \end{equation}
 
@@ -49,7 +49,7 @@ Since both $\pi^{u}$ and $1 - \pi^{u}$ belong to $[0,1]$, the inequality simplif
 
 
 %======================== Appendix B ========================
-\section*{Appendix B Proof for Lemma 1}
+\section*{Appendix B: Proof for Lemma 1}
 \quad The prompt of the $c$-th class is formulated as,
 \begin{equation}
 p_c = [\Phi(v_{\text{dom}})],  [\textit{classname}]
@@ -98,7 +98,7 @@ In scenarios where classes $c$ and $d$ belong to different domains, the abov
 
 
 %======================== Appendix C ========================
-\section*{Appendix C Hyperparameter Sensitivity Analysis}
+\section*{Appendix C: Hyperparameter Sensitivity Analysis}
 
 \quad Hyperparameter Sensitivity Analysis. Figure 1 shows the sensitivity analysis of two critical hyper-parameters. For attention heads number $K$, the optimal performance occurs at $K$=4. Fewer heads reduce accuracy due to insufficient semantic modeling, while more heads also degrade performance via overfitting. For $\sigma$ in diffusion generation, the best value is $\sigma$=0.2. Lower values limit the pseudo-unknown diversity, whereas higher values introduce noise that erodes semantic coherence.
 
